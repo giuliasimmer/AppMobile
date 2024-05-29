@@ -63,6 +63,9 @@ flutter:
     - assets/liso.png
     - assets/ondulado.png
     - assets/cacheado.png
+    - assets/seco.png
+    - assets/normal.png
+    - assets/oleoso.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

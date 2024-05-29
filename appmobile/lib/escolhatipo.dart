@@ -9,9 +9,9 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
   String? selectedOption;
   final GlobalKey<FormState> _dropdownFormKey = GlobalKey<FormState>();
   final Map<String, String> options = {
-    'LISO': 'assets/liso.png',
-    'ONDULADO': 'assets/ondulado.png',
-    'CACHEADO': 'assets/cacheado.png',
+    'Seco': 'assets/seco.png',
+    'Médio': 'assets/normal.png',
+    'Oleoso': 'assets/oleoso.png',
   };
 
   bool showErrorMessage = false;
@@ -20,7 +20,7 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Seleção de Opções'),
+        title: Text('Seleção de Tipo de Cabelo'),
       ),
       body: Center(
         child: Form(
@@ -29,7 +29,7 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Escolha uma opção:',
+                'Escolha o tipo de cabelo:',
                 style: TextStyle(fontSize: 18),
               ),
               SizedBox(height: 20),
@@ -42,20 +42,15 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
                   setState(() {
                     if (_dropdownFormKey.currentState!.validate() &&
                         selectedOption != null) {
-                      // Navegar para a próxima página (ex: EscolhaTipo)
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EscolhaTipo(),
-                        ),
-                      );
+                      // Chamada para API ou próxima página após validação
+                      _gerarConsulta(selectedOption!);
                       showErrorMessage = false;
                     } else {
                       showErrorMessage = true;
                     }
                   });
                 },
-                child: Text('CONTINUAR'),
+                child: Text('Gerar Consulta'),
               ),
               SizedBox(height: 20),
               if (showErrorMessage && selectedOption == null)
@@ -104,18 +99,10 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
     });
     return choices;
   }
-}
 
-class EscolhaTipo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Escolha o Tipo'),
-      ),
-      body: Center(
-        child: Text('Página de escolha de tipo'),
-      ),
-    );
+  // Função para chamar a API ou navegar para a próxima página
+  void _gerarConsulta(String tipoCabelo) {
+    // Aqui você faria a chamada para a API
+    print('Consulta gerada para o tipo de cabelo: $tipoCabelo');
   }
 }
