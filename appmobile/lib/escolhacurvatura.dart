@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'escolhatipo.dart'; // Importar a página EscolhaTipo
 
 class EscolhaCurvatura extends StatefulWidget {
   @override
@@ -40,9 +41,8 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
               ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    if (_dropdownFormKey.currentState!.validate() &&
-                        selectedOption != null) {
-                      // Navegar para a próxima página (ex: EscolhaTipo)
+                    if (selectedOption != null) {
+                      // Navegar para a próxima página (EscolhaTipo)
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -103,19 +103,5 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
       );
     });
     return choices;
-  }
-}
-
-class EscolhaTipo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Escolha o Tipo'),
-      ),
-      body: Center(
-        child: Text('Página de escolha de tipo'),
-      ),
-    );
   }
 }

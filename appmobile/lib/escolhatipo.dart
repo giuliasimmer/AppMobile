@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class EscolhaCurvatura extends StatefulWidget {
+class EscolhaTipo extends StatefulWidget {
   @override
-  _EscolhaCurvaturaState createState() => _EscolhaCurvaturaState();
+  _EscolhaTipoState createState() => _EscolhaTipoState();
 }
 
-class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
+class _EscolhaTipoState extends State<EscolhaTipo> {
   String? selectedOption;
   final GlobalKey<FormState> _dropdownFormKey = GlobalKey<FormState>();
   final Map<String, String> options = {
