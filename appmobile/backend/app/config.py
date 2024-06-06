@@ -1,6 +1,6 @@
 class Config:
-    MYSQL_HOST = 'localhost'
+    MYSQL_HOST = 'mysql@localhost'
     MYSQL_USER = 'root'
     MYSQL_PASSWORD = 'admin'
-    MYSQL_DB = 'APPMOBILE'
+    MYSQL_DB = 'appmobile'
 
