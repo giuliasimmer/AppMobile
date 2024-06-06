@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'api_service.dart';
 
 class Resultado extends StatefulWidget {
   final String result;

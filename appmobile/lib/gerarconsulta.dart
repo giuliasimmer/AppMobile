@@ -21,8 +21,10 @@ class _GerarConsultaState extends State<GerarConsulta> {
 
   Future<void> _fetchData() async {
     try {
-      final response =
-          await http.get(Uri.parse('http://localhost:5000/api/products'));
+      final response = await http.get(
+        Uri.parse(
+            'http://localhost:5000/api/products?tipoCabelo=${widget.tipoCabelo}'),
+      );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
