@@ -7,7 +7,7 @@ main = Blueprint('main', __name__)
 def get_users():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM users')
+    cursor.execute('SELECT * FROM APPMOBILE')
     users = cursor.fetchall()
     cursor.close()
     conn.close()

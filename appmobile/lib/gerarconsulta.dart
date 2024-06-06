@@ -22,7 +22,7 @@ class _GerarConsultaState extends State<GerarConsulta> {
   Future<void> _fetchData() async {
     try {
       final response =
-          await http.get(Uri.parse('http://localhost:5000/api/users'));
+          await http.get(Uri.parse('http://localhost:5000/api/products'));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -35,7 +35,7 @@ class _GerarConsultaState extends State<GerarConsulta> {
           ),
         );
       } else {
-        throw Exception('Failed to load users');
+        throw Exception('Failed to load products');
       }
     } catch (e) {
       // Tratar erros e exibir mensagem de erro

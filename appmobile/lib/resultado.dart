@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'api_service.dart';
 
 class Resultado extends StatefulWidget {
-  const Resultado({Key? key, required String result}) : super(key: key);
+  final String result;
+
+  const Resultado({Key? key, required this.result}) : super(key: key);
 
   @override
   _ResultadoState createState() => _ResultadoState();
 }
 
 class _ResultadoState extends State<Resultado> {
-  late Future<List<dynamic>> futureUsers;
-  final ApiService apiService = ApiService(baseUrl: 'http://localhost:5000');
+  late List<dynamic> products;
 
   @override
   void initState() {
     super.initState();
-    futureUsers = apiService.fetchUsers();
+    products = json.decode(widget.result);
   }
 
   @override
@@ -25,29 +27,26 @@ class _ResultadoState extends State<Resultado> {
         title: const Text('Resultado da Consulta'),
       ),
       body: Center(
-        child: FutureBuilder<List<dynamic>>(
-          future: futureUsers,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Erro: ${snapshot.error}');
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Text('Nenhum usuário encontrado');
-            } else {
-              return ListView.builder(
-                itemCount: snapshot.data!.length,
+        child: products.isEmpty
+            ? const Text('Nenhum produto encontrado')
+            : ListView.builder(
+                itemCount: products.length,
                 itemBuilder: (context, index) {
+                  var product = products[index];
                   return ListTile(
-                    title: Text('User ID: ${snapshot.data![index]['id']}'),
-                    subtitle:
-                        Text('Username: ${snapshot.data![index]['username']}'),
+                    title: Text('Nome: ${product['NOMEPRODUTO']}'),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Descrição: ${product['DESCRICAO']}'),
+                        Text('Marca: ${product['MARCA']}'),
+                        Text('Tamanho: ${product['TAMANHO_ML']} ml'),
+                        Text('Valor: R\$ ${product['VALOR']}'),
+                      ],
+                    ),
                   );
                 },
-              );
-            }
-          },
-        ),
+              ),
       ),
     );
   }
