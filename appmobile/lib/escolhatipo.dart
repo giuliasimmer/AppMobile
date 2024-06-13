@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class EscolhaTipo extends StatefulWidget {
+  final String curvaturaSelecionada;
+
+  const EscolhaTipo({Key? key, required this.curvaturaSelecionada})
+      : super(key: key);
+
   @override
   _EscolhaTipoState createState() => _EscolhaTipoState();
 }
@@ -9,9 +16,9 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
   String? selectedOption;
   final GlobalKey<FormState> _dropdownFormKey = GlobalKey<FormState>();
   final Map<String, String> options = {
-    'Seco': 'assets/seco.png',
-    'Médio': 'assets/normal.png',
-    'Oleoso': 'assets/oleoso.png',
+    'SECO': 'assets/seco.png',
+    'NORMAL': 'assets/normal.png',
+    'OLEOSO': 'assets/oleoso.png',
   };
 
   bool showErrorMessage = false;
@@ -20,7 +27,7 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Seleção de Tipo de Cabelo'),
+        title: const Text('Seleção de Tipo de Cabelo'),
       ),
       body: Center(
         child: Form(
@@ -28,33 +35,34 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Escolha o tipo de cabelo:',
                 style: TextStyle(fontSize: 18),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Column(
                 children: _buildChoiceList(),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    if (_dropdownFormKey.currentState!.validate() &&
-                        selectedOption != null) {
-                      // Chamada para API ou próxima página após validação
-                      _gerarConsulta(selectedOption!);
+                onPressed: () async {
+                  if (selectedOption != null) {
+                    await _saveSelectionToDatabase(selectedOption!);
+                    _showSelectedOptions();
+                    setState(() {
                       showErrorMessage = false;
-                    } else {
+                    });
+                  } else {
+                    setState(() {
                       showErrorMessage = true;
-                    }
-                  });
+                    });
+                  }
                 },
-                child: Text('Gerar Consulta'),
+                child: const Text('GERAR CONSULTA'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               if (showErrorMessage && selectedOption == null)
-                Text(
+                const Text(
                   'Escolha uma opção',
                   style: TextStyle(color: Colors.red),
                 ),
@@ -65,6 +73,47 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
     );
   }
 
+  Future<void> _saveSelectionToDatabase(String option) async {
+    final url = Uri.parse('http://localhost:5000/escolhatipo');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'oleoso': option == 'OLEOSO' ? 1 : 0,
+        'normal': option == 'NORMAL' ? 1 : 0,
+        'seco': option == 'SECO' ? 1 : 0,
+        'curvatura': widget.curvaturaSelecionada,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Dados inseridos com sucesso na tabela EscolhaTipo.');
+    } else {
+      print('Erro ao inserir dados: ${response.body}');
+    }
+  }
+
+  void _showSelectedOptions() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Opções Selecionadas'),
+          content: Text(
+              'Curvatura: ${widget.curvaturaSelecionada}\nTipo: $selectedOption'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   List<Widget> _buildChoiceList() {
     List<Widget> choices = [];
     options.forEach((key, value) {
@@ -72,37 +121,30 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
         GestureDetector(
           onTap: () {
             setState(() {
-              // Adiciona ou remove a seleção da opção
-              selectedOption = selectedOption == key ? null : key;
+              selectedOption = key;
             });
           },
           child: Column(
             children: [
               CircleAvatar(
-                radius: 45, // Aumentar o tamanho da imagem
+                radius: 45,
                 backgroundColor: selectedOption == key ? Colors.brown : null,
                 child: CircleAvatar(
-                  radius: 40, // Aumentar o tamanho da imagem
+                  radius: 40,
                   backgroundImage: AssetImage(value),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 key,
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
             ],
           ),
         ),
       );
     });
     return choices;
-  }
-
-  // Função para chamar a API ou navegar para a próxima página
-  void _gerarConsulta(String tipoCabelo) {
-    // Aqui você faria a chamada para a API
-    print('Consulta gerada para o tipo de cabelo: $tipoCabelo');
   }
 }

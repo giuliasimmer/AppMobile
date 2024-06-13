@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:mysql1/mysql1.dart';
 import 'escolhacurvatura.dart'; // Certifique-se de que o caminho está correto
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  final MySqlConnection? conn;
+
+  const Home({Key? key, this.conn}) : super(key: key);
 
   @override
-  _HomeState createState() => _HomeState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeState extends State<Home> {
+class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: <Widget>[
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/telafundo.png'),
                 fit: BoxFit.cover,
@@ -31,11 +34,11 @@ class _HomeState extends State<Home> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        EscolhaCurvatura(), // Navega para a página definida em escolhacurvatura.dart
+                        EscolhaCurvatura(conn: widget.conn), // Passa a conexão
                   ),
                 );
               },
-              child: Text('CRIAR MINHA CONSULTA DETALHADA'),
+              child: const Text('CRIAR MINHA CONSULTA DETALHADA'),
             ),
           ),
         ],
