@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'escolhatipo.dart'; // Importar a página EscolhaTipo
+import 'package:mysql1/mysql1.dart';
+import 'escolhatipo.dart'; // Certifique-se de que o caminho está correto
 
 class EscolhaCurvatura extends StatefulWidget {
+  final MySqlConnection? conn;
+
+  const EscolhaCurvatura({Key? key, this.conn}) : super(key: key);
+
   @override
   _EscolhaCurvaturaState createState() => _EscolhaCurvaturaState();
 }
@@ -21,7 +26,7 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Seleção de Opções'),
+        title: const Text('Seleção de Curvatura do Cabelo'),
       ),
       body: Center(
         child: Form(
@@ -29,37 +34,41 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Escolha uma opção:',
                 style: TextStyle(fontSize: 18),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Column(
                 children: _buildChoiceList(),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    if (selectedOption != null) {
-                      // Navegar para a próxima página (EscolhaTipo)
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EscolhaTipo(),
+                onPressed: () async {
+                  if (selectedOption != null) {
+                    await _saveSelectionToDatabase(selectedOption!);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EscolhaTipo(
+                          curvaturaSelecionada: selectedOption!,
                         ),
-                      );
+                      ),
+                    );
+                    setState(() {
                       showErrorMessage = false;
-                    } else {
+                    });
+                  } else {
+                    setState(() {
                       showErrorMessage = true;
-                    }
-                  });
+                    });
+                  }
                 },
-                child: Text('CONTINUAR'),
+                child: const Text('CONTINUAR'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               if (showErrorMessage && selectedOption == null)
-                Text(
+                const Text(
                   'Escolha uma opção',
                   style: TextStyle(color: Colors.red),
                 ),
@@ -70,6 +79,24 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
     );
   }
 
+  Future<void> _saveSelectionToDatabase(String option) async {
+    final conn = widget.conn;
+
+    if (conn != null) {
+      var result = await conn.query(
+        'INSERT INTO EscolhaCurvatura (LISO, ONDULADO, CACHEADO) VALUES (?, ?, ?)',
+        [
+          option == 'LISO' ? 1 : 0,
+          option == 'ONDULADO' ? 1 : 0,
+          option == 'CACHEADO' ? 1 : 0,
+        ],
+      );
+      print('Dados inseridos com sucesso: ${result.insertId}');
+    } else {
+      print('Erro: Conexão com o banco de dados não está disponível.');
+    }
+  }
+
   List<Widget> _buildChoiceList() {
     List<Widget> choices = [];
     options.forEach((key, value) {
@@ -77,26 +104,25 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
         GestureDetector(
           onTap: () {
             setState(() {
-              // Adiciona ou remove a seleção da opção
-              selectedOption = selectedOption == key ? null : key;
+              selectedOption = key;
             });
           },
           child: Column(
             children: [
               CircleAvatar(
-                radius: 45, // Aumentar o tamanho da imagem
+                radius: 45,
                 backgroundColor: selectedOption == key ? Colors.brown : null,
                 child: CircleAvatar(
-                  radius: 40, // Aumentar o tamanho da imagem
+                  radius: 40,
                   backgroundImage: AssetImage(value),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 key,
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
             ],
           ),
         ),
