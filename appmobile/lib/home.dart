@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mysql1/mysql1.dart';
 import 'escolhacurvatura.dart'; // Certifique-se de que o caminho está correto
 
 class Home extends StatefulWidget {
-  final MySqlConnection? conn;
-
-  const Home({Key? key, this.conn}) : super(key: key);
-
   @override
   HomeState createState() => HomeState();
 }
@@ -33,8 +28,7 @@ class HomeState extends State<Home> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        EscolhaCurvatura(conn: widget.conn), // Passa a conexão
+                    builder: (context) => EscolhaCurvatura(),
                   ),
                 );
               },
