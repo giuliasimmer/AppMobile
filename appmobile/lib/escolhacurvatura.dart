@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mysql1/mysql1.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'escolhatipo.dart'; // Certifique-se de que o caminho está correto
 
 class EscolhaCurvatura extends StatefulWidget {
-  final MySqlConnection? conn;
-
-  const EscolhaCurvatura({Key? key, this.conn}) : super(key: key);
-
   @override
   _EscolhaCurvaturaState createState() => _EscolhaCurvaturaState();
 }
@@ -80,20 +77,26 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
   }
 
   Future<void> _saveSelectionToDatabase(String option) async {
-    final conn = widget.conn;
-
-    if (conn != null) {
-      var result = await conn.query(
-        'INSERT INTO EscolhaCurvatura (LISO, ONDULADO, CACHEADO) VALUES (?, ?, ?)',
-        [
-          option == 'LISO' ? 1 : 0,
-          option == 'ONDULADO' ? 1 : 0,
-          option == 'CACHEADO' ? 1 : 0,
-        ],
+    try {
+      final response = await http.post(
+        Uri.parse(
+            'http://localhost:5000/escolhacurvatura'), // URL do servidor Flask
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, int>{
+          'liso': option == 'LISO' ? 1 : 0,
+          'ondulado': option == 'ONDULADO' ? 1 : 0,
+          'cacheado': option == 'CACHEADO' ? 1 : 0,
+        }),
       );
-      print('Dados inseridos com sucesso: ${result.insertId}');
-    } else {
-      print('Erro: Conexão com o banco de dados não está disponível.');
+      if (response.statusCode == 200) {
+        print('Dados inseridos com sucesso');
+      } else {
+        print('Erro ao inserir dados: ${response.body}');
+      }
+    } catch (e) {
+      print('Erro ao conectar ao servidor: $e');
     }
   }
 
