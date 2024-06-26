@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7876d6c6-e26a-4e64-a4aa-99234fbb0b92" name="Changes" comment="" />
+    <list default="true" id="7876d6c6-e26a-4e64-a4aa-99234fbb0b92" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cacheado_normal.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cacheado_oleoso.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cacheado_seco.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/liso_oleoso.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/liso_seco.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ondulado_normal.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ondulado_oleoso.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ondulado_seco.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scrapping_liso.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,9 +29,12 @@
       </list>
     </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2iQQvy4l6KPTYky5K55FK4pYI3k" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -27,8 +42,20 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.cacheado_normal.executor": "Run",
+    "Python.cacheado_oleoso.executor": "Run",
+    "Python.cacheado_seco.executor": "Run",
+    "Python.liso_oleoso.executor": "Run",
+    "Python.liso_seco.executor": "Run",
+    "Python.ondulado_normal.executor": "Run",
+    "Python.ondulado_oleoso.executor": "Run",
+    "Python.ondulado_seco.executor": "Run",
     "Python.scrapping.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "Python.scrapping_liso.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "Webscrapping-2",
+    "last_opened_file_path": "C:/Git/AppMobile/webscrapping"
   }
 }]]></component>
   <component name="SharedIndexes">
