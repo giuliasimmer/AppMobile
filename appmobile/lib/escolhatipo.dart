@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'GerarConsulta.dart'; // Importe a página GerarConsulta.dart
 
 class EscolhaTipo extends StatefulWidget {
   final String curvaturaSelecionada;
@@ -52,6 +53,14 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
                     setState(() {
                       showErrorMessage = false;
                     });
+                    // Navega para a página GerarConsulta após salvar os dados
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            GerarConsulta(tipoCabelo: selectedOption!),
+                      ),
+                    );
                   } else {
                     setState(() {
                       showErrorMessage = true;
