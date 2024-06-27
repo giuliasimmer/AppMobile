@@ -5,8 +5,13 @@ import 'resultado.dart';
 
 class GerarConsulta extends StatefulWidget {
   final String tipoCabelo;
+  final String curvatura;
 
-  const GerarConsulta({Key? key, required this.tipoCabelo}) : super(key: key);
+  const GerarConsulta({
+    Key? key,
+    required this.tipoCabelo,
+    required this.curvatura,
+  }) : super(key: key);
 
   @override
   _GerarConsultaState createState() => _GerarConsultaState();
@@ -14,6 +19,9 @@ class GerarConsulta extends StatefulWidget {
 
 class _GerarConsultaState extends State<GerarConsulta> {
   bool _isLoading = true;
+  late String tableName;
+  late Map<String, dynamic> data;
+  bool _canViewResult = false;
 
   @override
   void initState() {
@@ -23,32 +31,32 @@ class _GerarConsultaState extends State<GerarConsulta> {
 
   Future<void> _fetchData() async {
     try {
-      final response = await http.get(
-        Uri.parse(
-            'http://localhost:5000/api/getcabelo?tipoCabelo=${widget.tipoCabelo}'),
+      final response = await http.post(
+        Uri.parse('http://localhost:5000/api/getcabelo'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'tipoCabelo': widget.tipoCabelo,
+          'curvatura': widget.curvatura,
+        }),
       );
 
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-
-        // Navegar para a página de resultados com os dados obtidos
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                Resultado(result: json.encode(data), tableName: 'getcabelo'),
-          ),
-        );
+        final responseData = json.decode(response.body);
+        setState(() {
+          data = responseData['data'];
+          tableName = responseData['tableName'];
+          _canViewResult = true; // Habilita o botão para ver o resultado
+        });
       } else {
         throw Exception('Failed to load data');
       }
     } catch (e) {
-      // Tratar erros e exibir mensagem de erro
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erro: $e')),
       );
     } finally {
-      // Indicar que o carregamento foi concluído
       setState(() {
         _isLoading = false;
       });
@@ -63,7 +71,6 @@ class _GerarConsultaState extends State<GerarConsulta> {
       ),
       body: Stack(
         children: [
-          // Imagem de fundo
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -72,18 +79,38 @@ class _GerarConsultaState extends State<GerarConsulta> {
               ),
             ),
           ),
-          // Conteúdo da página
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _isLoading
-                    ? CircularProgressIndicator()
-                    : SizedBox
-                        .shrink(), // Mostra o indicador de progresso apenas enquanto está carregando
+                _isLoading ? CircularProgressIndicator() : SizedBox.shrink(),
                 const SizedBox(height: 20),
                 Text(
-                    'Gerando consulta para tipo de cabelo: ${widget.tipoCabelo}'),
+                  'Gerando consulta para tipo de cabelo: ${widget.tipoCabelo}',
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Escolha de curvatura: ${widget.curvatura}',
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _canViewResult
+                      ? () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Resultado(
+                                result: json.encode(data),
+                                tableName: tableName,
+                                tipoCabelo: widget.tipoCabelo,
+                                curvatura: widget.curvatura,
+                              ),
+                            ),
+                          );
+                        }
+                      : null, // Desabilita o botão se não puder ver o resultado
+                  child: Text('Ver Resultado'),
+                ),
               ],
             ),
           ),

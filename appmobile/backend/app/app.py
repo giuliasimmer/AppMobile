@@ -102,4 +102,60 @@ def create_app():
                 connection.close()
         return jsonify({"message": "Erro ao conectar ao banco de dados"}), 500
 
+# REFAZER COM BACKEND DIRETO NO PYTHON E COLOCAR LOGICA DO INSERT 
+
+    @app.route('/getcabelo', methods=['POST'])
+    def get_cabelo():
+        data = request.json
+        curvatura = data.get('curvatura', '')
+        tipo_cabelo = data.get('tipo_cabelo', '')
+        connection = create_connection()
+        if connection:
+            try:
+             criaTabela(curvatura=curvatura, tipo_cabelo=tipo_cabelo)
+            except Error as e:
+                print(f"Erro ao buscar dados: {e}")
+                return jsonify({"message": "Erro ao buscar dados"}), 500
+            finally:
+                cursor.close()
+                connection.close()
+        return jsonify({"message": "Erro ao conectar ao banco de dados"}), 500
+
+    @app.route('/resultadocabelo', methods=['GET'])
+    def get_resultado_cabelo():
+        data = request.json
+        tipo_cabelo = data.get('tipoCabelo', '')
+        curvatura = data.get('curvatura', '')
+        connection = create_connection()
+        if connection:
+            try:
+                cursor = connection.cursor()
+                query = 'SELECT table_name FROM ResultadoGetCabelo WHERE tipo_cabelo = %s AND curvatura = %s'
+                cursor.execute(query, (tipo_cabelo, curvatura))
+                record = cursor.fetchone()
+                if record:
+                    table_name = record[0]
+                    # Agora vamos buscar os dados na tabela com o table_name obtido
+                    query_data = f'SELECT * FROM {table_name}'
+                    cursor.execute(query_data)
+                    records = cursor.fetchall()
+                    return jsonify(records), 200
+                else:
+                    return jsonify({"message": "Combinação não encontrada"}), 404
+            except Error as e:
+                print(f"Erro ao buscar dados: {e}")
+                return jsonify({"message": "Erro ao buscar dados"}), 500
+            finally:
+                cursor.close()
+                connection.close()
+        return jsonify({"message": "Erro ao conectar ao banco de dados"}), 500
+
+def criaTabela(curvatura,Tipo cabelo):
+
+    # privado 
+
     return app
+
+
+
+# TRATAR CONDICIONAL DE REPETIÇÃO INSERT 

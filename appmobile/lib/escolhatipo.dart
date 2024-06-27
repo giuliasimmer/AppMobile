@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'GerarConsulta.dart'; // Importe a página GerarConsulta.dart
+import 'gerarconsulta.dart'; // Importe a página GerarConsulta.dart
 
 class EscolhaTipo extends StatefulWidget {
   final String curvaturaSelecionada;
@@ -49,18 +49,7 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
                 onPressed: () async {
                   if (selectedOption != null) {
                     await _saveSelectionToDatabase(selectedOption!);
-                    _showSelectedOptions();
-                    setState(() {
-                      showErrorMessage = false;
-                    });
-                    // Navega para a página GerarConsulta após salvar os dados
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            GerarConsulta(tipoCabelo: selectedOption!),
-                      ),
-                    );
+                    _showSelectedOptions(); // Mostra o AlertDialog
                   } else {
                     setState(() {
                       showErrorMessage = true;
@@ -92,9 +81,7 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{
-          'oleoso': option == 'OLEOSO' ? 1 : 0,
-          'normal': option == 'NORMAL' ? 1 : 0,
-          'seco': option == 'SECO' ? 1 : 0,
+          'tipoCabelo': option,
           'curvatura': widget.curvaturaSelecionada,
         }),
       );
@@ -119,7 +106,18 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // Fecha o AlertDialog
+                if (selectedOption != null) {
+                  // Navega para a página GerarConsulta após fechar o AlertDialog
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GerarConsulta(
+                          tipoCabelo: selectedOption!,
+                          curvatura: widget.curvaturaSelecionada),
+                    ),
+                  );
+                }
               },
               child: const Text('OK'),
             ),
