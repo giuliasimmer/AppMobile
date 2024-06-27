@@ -90,7 +90,7 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
         }),
       );
       if (response.statusCode == 200) {
-        print('Dados inseridos com sucesso na tabela EscolhaTipo.');
+        print('Dados inseridos com sucesso.');
       } else {
         print('Erro ao inserir dados: ${response.body}');
       }

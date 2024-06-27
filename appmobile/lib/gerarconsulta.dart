@@ -13,6 +13,8 @@ class GerarConsulta extends StatefulWidget {
 }
 
 class _GerarConsultaState extends State<GerarConsulta> {
+  bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
@@ -23,7 +25,7 @@ class _GerarConsultaState extends State<GerarConsulta> {
     try {
       final response = await http.get(
         Uri.parse(
-            'http://localhost:5000/api/products?tipoCabelo=${widget.tipoCabelo}'),
+            'http://localhost:5000/api/getcabelo?tipoCabelo=${widget.tipoCabelo}'),
       );
 
       if (response.statusCode == 200) {
@@ -33,17 +35,23 @@ class _GerarConsultaState extends State<GerarConsulta> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => Resultado(result: json.encode(data)),
+            builder: (context) =>
+                Resultado(result: json.encode(data), tableName: 'getcabelo'),
           ),
         );
       } else {
-        throw Exception('Failed to load products');
+        throw Exception('Failed to load data');
       }
     } catch (e) {
       // Tratar erros e exibir mensagem de erro
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erro: $e')),
       );
+    } finally {
+      // Indicar que o carregamento foi concluído
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -69,7 +77,10 @@ class _GerarConsultaState extends State<GerarConsulta> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const CircularProgressIndicator(),
+                _isLoading
+                    ? CircularProgressIndicator()
+                    : SizedBox
+                        .shrink(), // Mostra o indicador de progresso apenas enquanto está carregando
                 const SizedBox(height: 20),
                 Text(
                     'Gerando consulta para tipo de cabelo: ${widget.tipoCabelo}'),
