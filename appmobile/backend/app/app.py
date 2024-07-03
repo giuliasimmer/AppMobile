@@ -104,22 +104,22 @@ def create_app():
 
 # REFAZER COM BACKEND DIRETO NO PYTHON E COLOCAR LOGICA DO INSERT 
 
-    @app.route('/getcabelo', methods=['POST'])
-    def get_cabelo():
-        data = request.json
-        curvatura = data.get('curvatura', '')
-        tipo_cabelo = data.get('tipo_cabelo', '')
-        connection = create_connection()
-        if connection:
-            try:
-             criaTabela(curvatura=curvatura, tipo_cabelo=tipo_cabelo)
-            except Error as e:
-                print(f"Erro ao buscar dados: {e}")
-                return jsonify({"message": "Erro ao buscar dados"}), 500
-            finally:
-                cursor.close()
-                connection.close()
-        return jsonify({"message": "Erro ao conectar ao banco de dados"}), 500
+   # @app.route('/getcabelo', methods=['POST'])
+   # def get_cabelo():
+       # data = request.json
+      #  curvatura = data.get('curvatura', '')
+       # tipo_cabelo = data.get('tipo_cabelo', '')
+       # connection = create_connection()
+       # if connection:
+           # try:
+           #  criaTabela(curvatura=curvatura, tipo_cabelo=tipo_cabelo)
+           # except Error as e:
+              #  print(f"Erro ao buscar dados: {e}")
+             #   return jsonify({"message": "Erro ao buscar dados"}), 500
+           # finally:
+              #  cursor.close()
+              #  connection.close()
+       # return jsonify({"message": "Erro ao conectar ao banco de dados"}), 500
 
     @app.route('/resultadocabelo', methods=['GET'])
     def get_resultado_cabelo():
@@ -150,7 +150,7 @@ def create_app():
                 connection.close()
         return jsonify({"message": "Erro ao conectar ao banco de dados"}), 500
 
-def criaTabela(curvatura,Tipo cabelo):
+#def criaTabela(curvatura,Tipo cabelo):
 
     # privado 
 
