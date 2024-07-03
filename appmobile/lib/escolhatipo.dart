@@ -73,20 +73,19 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
 
   Future<void> _saveSelectionToDatabase(String option) async {
     try {
-      final url = Uri.parse(
-          'http://localhost:5000/escolhatipo'); // URL do servidor Flask
       final response = await http.post(
-        url,
+        Uri.parse('http://localhost:5000/escolhatipo'), // URL do servidor Flask
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, dynamic>{
-          'tipoCabelo': option,
-          'curvatura': widget.curvaturaSelecionada,
+        body: jsonEncode(<String, int>{
+          'seco': option == 'SECO' ? 1 : 0,
+          'normal': option == 'NORMAL' ? 1 : 0,
+          'oleoso': option == 'OLEOSO' ? 1 : 0,
         }),
       );
       if (response.statusCode == 200) {
-        print('Dados inseridos com sucesso.');
+        print('Dados inseridos com sucesso');
       } else {
         print('Erro ao inserir dados: ${response.body}');
       }

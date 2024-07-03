@@ -32,12 +32,12 @@ class _GerarConsultaState extends State<GerarConsulta> {
   Future<void> _fetchData() async {
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:5000/api/getcabelo'),
+        Uri.parse('http://localhost:5000/recolhecabelo'), // URL corrigida
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode({
-          'tipoCabelo': widget.tipoCabelo,
+          'tipo_cabelo': widget.tipoCabelo,
           'curvatura': widget.curvatura,
         }),
       );
@@ -45,8 +45,7 @@ class _GerarConsultaState extends State<GerarConsulta> {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         setState(() {
-          data = responseData['data'];
-          tableName = responseData['tableName'];
+          tableName = responseData['result_table_name'];
           _canViewResult = true; // Habilita o botão para ver o resultado
         });
       } else {
@@ -66,9 +65,6 @@ class _GerarConsultaState extends State<GerarConsulta> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Gerando Consulta'),
-      ),
       body: Stack(
         children: [
           Container(
@@ -87,10 +83,12 @@ class _GerarConsultaState extends State<GerarConsulta> {
                 const SizedBox(height: 20),
                 Text(
                   'Gerando consulta para tipo de cabelo: ${widget.tipoCabelo}',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
                 const SizedBox(height: 10),
                 Text(
                   'Escolha de curvatura: ${widget.curvatura}',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(

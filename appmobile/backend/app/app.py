@@ -65,15 +65,15 @@ def create_app():
     @app.route('/escolhatipo', methods=['POST'])
     def escolha_tipo():
         data = request.json
-        oleoso = data.get('oleoso', 0)
-        normal = data.get('normal', 0)
         seco = data.get('seco', 0)
+        normal = data.get('normal', 0)
+        oleoso = data.get('oleoso', 0)
         connection = create_connection()
         if connection:
             try:
                 cursor = connection.cursor()
-                query = 'INSERT INTO TipoCabelo (OLEOSO, NORMAL, SECO) VALUES (%s, %s, %s)'
-                cursor.execute(query, (oleoso, normal, seco))
+                query = 'INSERT INTO TipoCabelo (SECO, NORMAL, OLEOSO) VALUES (%s, %s, %s)'
+                cursor.execute(query, (seco, normal, oleoso))
                 connection.commit()
                 return jsonify({"message": "Dados inseridos com sucesso"}), 200
             except Error as e:
@@ -102,60 +102,90 @@ def create_app():
                 connection.close()
         return jsonify({"message": "Erro ao conectar ao banco de dados"}), 500
 
-# REFAZER COM BACKEND DIRETO NO PYTHON E COLOCAR LOGICA DO INSERT 
+    @app.route('/recolhecabelo', methods=['POST'])
+    def recolhe_cabelo():
+        data = request.get_json()
+        curvatura = data.get('curvatura')
+        tipo_cabelo = data.get('tipo_cabelo')
 
-   # @app.route('/getcabelo', methods=['POST'])
-   # def get_cabelo():
-       # data = request.json
-      #  curvatura = data.get('curvatura', '')
-       # tipo_cabelo = data.get('tipo_cabelo', '')
-       # connection = create_connection()
-       # if connection:
-           # try:
-           #  criaTabela(curvatura=curvatura, tipo_cabelo=tipo_cabelo)
-           # except Error as e:
-              #  print(f"Erro ao buscar dados: {e}")
-             #   return jsonify({"message": "Erro ao buscar dados"}), 500
-           # finally:
-              #  cursor.close()
-              #  connection.close()
-       # return jsonify({"message": "Erro ao conectar ao banco de dados"}), 500
+        # Determinando o nome da tabela de resultados
+        result_table_name = None
+        if curvatura == 'LISO':
+            if tipo_cabelo == 'SECO':
+                result_table_name = 'LISO_SECO'
+            elif tipo_cabelo == 'NORMAL':
+                result_table_name = 'LISO_NORMAL'
+            elif tipo_cabelo == 'OLEOSO':
+                result_table_name = 'LISO_OLEOSO'
+        elif curvatura == 'ONDULADO':
+            if tipo_cabelo == 'SECO':
+                result_table_name = 'ONDULADO_SECO'
+            elif tipo_cabelo == 'NORMAL':
+                result_table_name = 'ONDULADO_NORMAL'
+            elif tipo_cabelo == 'OLEOSO':
+                result_table_name = 'ONDULADO_OLEOSO'
+        elif curvatura == 'CACHEADO':
+            if tipo_cabelo == 'SECO':
+                result_table_name = 'CACHEADO_SECO'
+            elif tipo_cabelo == 'NORMAL':
+                result_table_name = 'CACHEADO_NORMAL'
+            elif tipo_cabelo == 'OLEOSO':
+                result_table_name = 'CACHEADO_OLEOSO'
 
-    @app.route('/resultadocabelo', methods=['GET'])
-    def get_resultado_cabelo():
-        data = request.json
-        tipo_cabelo = data.get('tipoCabelo', '')
-        curvatura = data.get('curvatura', '')
         connection = create_connection()
         if connection:
             try:
                 cursor = connection.cursor()
-                query = 'SELECT table_name FROM ResultadoGetCabelo WHERE tipo_cabelo = %s AND curvatura = %s'
-                cursor.execute(query, (tipo_cabelo, curvatura))
-                record = cursor.fetchone()
-                if record:
-                    table_name = record[0]
-                    # Agora vamos buscar os dados na tabela com o table_name obtido
-                    query_data = f'SELECT * FROM {table_name}'
-                    cursor.execute(query_data)
-                    records = cursor.fetchall()
-                    return jsonify(records), 200
+                if result_table_name:
+                    # Inserindo na tabela ResultadoGetCabelo
+                    cursor.execute(
+                        "INSERT INTO ResultadoGetCabelo (id, curvatura, tipo_cabelo, result_table_name) VALUES (%s, %s, %s, %s)",
+                        (0, curvatura, tipo_cabelo, result_table_name)
+                    )
+                    connection.commit()
+
+                    # Retornando o nome da tabela
+                    return jsonify({"result_table_name": result_table_name})
                 else:
-                    return jsonify({"message": "Combinação não encontrada"}), 404
+                    return jsonify({"error": "Invalid combination"}), 400
+            except mysql.connector.Error as err:
+                return jsonify({"error": str(err)}), 500
+            finally:
+                cursor.close()
+                connection.close()
+        else:
+            return jsonify({"error": "Erro ao conectar ao banco de dados"}), 500
+
+    @app.route('/resultadocabelo', methods=['GET'])
+    def get_resultado_cabelo():
+        connection = create_connection()
+        if connection:
+            try:
+                cursor = connection.cursor()
+                query = 'SELECT result_table_name FROM ResultadoGetCabelo'
+                cursor.execute(query)
+                records = cursor.fetchall()
+
+                result_data = {}
+                for record in records:
+                    result_table_name = record[0]
+                    query_data = f'SELECT * FROM {result_table_name}'
+                    cursor.execute(query_data)
+                    data = cursor.fetchall()
+                    result_data[result_table_name] = data
+
+                return jsonify(result_data), 200
             except Error as e:
                 print(f"Erro ao buscar dados: {e}")
                 return jsonify({"message": "Erro ao buscar dados"}), 500
             finally:
                 cursor.close()
                 connection.close()
-        return jsonify({"message": "Erro ao conectar ao banco de dados"}), 500
-
-#def criaTabela(curvatura,Tipo cabelo):
-
-    # privado 
+        else:
+            return jsonify({"message": "Erro ao conectar ao banco de dados"}), 500
 
     return app
 
-
-
-# TRATAR CONDICIONAL DE REPETIÇÃO INSERT 
+if __name__ == '__main__':
+    app = create_app()
+    app.run(debug=True)
