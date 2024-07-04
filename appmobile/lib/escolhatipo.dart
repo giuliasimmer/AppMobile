@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'gerarconsulta.dart'; // Importe a página GerarConsulta.dart
 
 class EscolhaTipo extends StatefulWidget {
   final String curvaturaSelecionada;
@@ -48,10 +49,7 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
                 onPressed: () async {
                   if (selectedOption != null) {
                     await _saveSelectionToDatabase(selectedOption!);
-                    _showSelectedOptions();
-                    setState(() {
-                      showErrorMessage = false;
-                    });
+                    _showSelectedOptions(); // Mostra o AlertDialog
                   } else {
                     setState(() {
                       showErrorMessage = true;
@@ -75,22 +73,19 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
 
   Future<void> _saveSelectionToDatabase(String option) async {
     try {
-      final url = Uri.parse(
-          'http://localhost:5000/escolhatipo'); // URL do servidor Flask
       final response = await http.post(
-        url,
+        Uri.parse('http://localhost:5000/escolhatipo'), // URL do servidor Flask
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, dynamic>{
-          'oleoso': option == 'OLEOSO' ? 1 : 0,
-          'normal': option == 'NORMAL' ? 1 : 0,
+        body: jsonEncode(<String, int>{
           'seco': option == 'SECO' ? 1 : 0,
-          'curvatura': widget.curvaturaSelecionada,
+          'normal': option == 'NORMAL' ? 1 : 0,
+          'oleoso': option == 'OLEOSO' ? 1 : 0,
         }),
       );
       if (response.statusCode == 200) {
-        print('Dados inseridos com sucesso.');
+        print('Dados inseridos com sucesso');
       } else {
         print('Erro ao inserir dados: ${response.body}');
       }
@@ -110,7 +105,18 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // Fecha o AlertDialog
+                if (selectedOption != null) {
+                  // Navega para a página GerarConsulta após fechar o AlertDialog
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GerarConsulta(
+                          tipoCabelo: selectedOption!,
+                          curvatura: widget.curvaturaSelecionada),
+                    ),
+                  );
+                }
               },
               child: const Text('OK'),
             ),
