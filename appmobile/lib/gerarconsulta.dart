@@ -20,7 +20,7 @@ class GerarConsulta extends StatefulWidget {
 class _GerarConsultaState extends State<GerarConsulta> {
   bool _isLoading = true;
   late String tableName;
-  late Map<String, dynamic> data;
+  late List<dynamic> data; // Change to List<dynamic> to store the fetched data
   bool _canViewResult = false;
 
   @override
@@ -32,7 +32,7 @@ class _GerarConsultaState extends State<GerarConsulta> {
   Future<void> _fetchData() async {
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:5000/recolhecabelo'), // URL corrigida
+        Uri.parse('http://localhost:5000/recolhecabelo'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -46,7 +46,7 @@ class _GerarConsultaState extends State<GerarConsulta> {
         final responseData = json.decode(response.body);
         setState(() {
           tableName = responseData['result_table_name'];
-          _canViewResult = true; // Habilita o botão para ver o resultado
+          _fetchTableData(); // Fetch data from the table
         });
       } else {
         throw Exception('Failed to load data');
@@ -54,6 +54,35 @@ class _GerarConsultaState extends State<GerarConsulta> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erro: $e')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _fetchTableData() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://localhost:5000/resultadocabelo'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        setState(() {
+          data = responseData[tableName];
+          _canViewResult = true; // Habilita o botão para ver o resultado
+        });
+      } else {
+        throw Exception('Failed to load table data');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao buscar dados da tabela: $e')),
       );
     } finally {
       setState(() {

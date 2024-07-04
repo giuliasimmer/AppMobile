@@ -162,19 +162,22 @@ def create_app():
         if connection:
             try:
                 cursor = connection.cursor()
-                query = 'SELECT result_table_name FROM ResultadoGetCabelo'
+                query = 'SELECT result_table_name FROM ResultadoGetCabelo ORDER BY id DESC LIMIT 1'
                 cursor.execute(query)
-                records = cursor.fetchall()
+                record = cursor.fetchone()
 
-                result_data = {}
-                for record in records:
+                if record:
                     result_table_name = record[0]
                     query_data = f'SELECT * FROM {result_table_name}'
                     cursor.execute(query_data)
                     data = cursor.fetchall()
-                    result_data[result_table_name] = data
 
-                return jsonify(result_data), 200
+                    columns = [desc[0] for desc in cursor.description]
+                    result_data = [dict(zip(columns, row)) for row in data]
+
+                    return jsonify({result_table_name: result_data}), 200
+                else:
+                    return jsonify({"message": "Nenhum dado encontrado"}), 404
             except Error as e:
                 print(f"Erro ao buscar dados: {e}")
                 return jsonify({"message": "Erro ao buscar dados"}), 500
@@ -184,6 +187,7 @@ def create_app():
         else:
             return jsonify({"message": "Erro ao conectar ao banco de dados"}), 500
 
+        
     return app
 
 if __name__ == '__main__':
