@@ -41,6 +41,7 @@ class _ResultadoState extends State<Resultado> {
         final responseData = json.decode(response.body);
         setState(() {
           items = responseData[widget.tableName];
+          _isLoading = false;
         });
       } else {
         throw Exception('Failed to load data');
@@ -49,7 +50,6 @@ class _ResultadoState extends State<Resultado> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erro: $e')),
       );
-    } finally {
       setState(() {
         _isLoading = false;
       });
@@ -71,106 +71,108 @@ class _ResultadoState extends State<Resultado> {
             ),
           ),
           SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        'assets/logo.png',
-                        width: 300,
-                        height: 300,
-                      ),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: () {
-                          const url = 'https://www.belezanaweb.com.br/';
-                          launchURL(url);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 30),
-                          backgroundColor: Colors.brown.withOpacity(0.5),
-                        ),
-                        child: Text(
-                          'REALIZAR COMPRA',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                          '*Para efetuar sua compra você deverá copiar o nome do produto na barra de pesquisa*',
-                          style: TextStyle(
-                            color: Colors.redAccent,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(height: 9),
+                  Image.asset(
+                    'assets/logo.png',
+                    width: 300,
+                    height: 300,
                   ),
-                ),
-                _isLoading
-                    ? Center(child: CircularProgressIndicator())
-                    : items.isEmpty
-                        ? Center(child: Text('Nenhum dado encontrado'))
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: items.length,
-                            itemBuilder: (context, index) {
-                              var item = items[index];
-                              return Card(
-                                color: Colors.brown.withOpacity(0.7),
-                                margin: EdgeInsets.all(10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ListTile(
-                                      leading: Image.asset(
-                                        'assets/produto.png',
-                                        width: 50,
-                                        height: 50,
-                                      ),
-                                      title: Text(
-                                        'MARCA: ${item['MARCA']}',
-                                        style: TextStyle(
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      const url = 'https://www.belezanaweb.com.br/';
+                      launchURL(url);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                      backgroundColor: Colors.brown.withOpacity(0.5),
+                    ),
+                    child: Text(
+                      'REALIZAR COMPRA',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      '*Para efetuar sua compra você deverá copiar o nome do produto na barra de pesquisa*',
+                      style: TextStyle(
+                        color: Colors.redAccent,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  _isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : items.isEmpty
+                          ? Center(child: Text('Nenhum dado encontrado'))
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: items.length,
+                              itemBuilder: (context, index) {
+                                var item = items[index];
+                                return Card(
+                                  color: Colors.brown.withOpacity(0.7),
+                                  margin: EdgeInsets.all(10),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ListTile(
+                                        leading: Image.asset(
+                                          'assets/produto.png',
+                                          width: 50,
+                                          height: 50,
+                                        ),
+                                        title: Text(
+                                          'MARCA: ${item['MARCA']}',
+                                          style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'DESCRIÇÃO: ${item['DESCRICAO']}',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
+                                            color: Colors.white,
                                           ),
-                                          Text(
-                                            'PREÇO: ${item['PRECO']}',
-                                            style: TextStyle(
+                                        ),
+                                        subtitle: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'DESCRIÇÃO: ${item['DESCRICAO']}',
+                                              style: TextStyle(
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.white),
-                                          ),
-                                        ],
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            Text(
+                                              'PREÇO: ${item['PRECO']}',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-              ],
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                ],
+              ),
             ),
           ),
           Positioned(

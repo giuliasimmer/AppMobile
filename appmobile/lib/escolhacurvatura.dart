@@ -116,7 +116,9 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
                       if (showErrorMessage && selectedOption == null)
                         const Text(
                           'Escolha uma opção',
-                          style: TextStyle(color: Colors.red),
+                          style: TextStyle(
+                              color: Colors.redAccent,
+                              fontWeight: FontWeight.bold),
                         ),
                       const SizedBox(height: 20),
                     ],

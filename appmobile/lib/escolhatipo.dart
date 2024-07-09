@@ -109,7 +109,8 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
                       if (showErrorMessage && selectedOption == null)
                         const Text(
                           'Escolha uma opção',
-                          style: TextStyle(color: Colors.red),
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.bold),
                         ),
                     ],
                   ),

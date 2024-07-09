@@ -5,7 +5,7 @@ from mysql.connector import Error
 
 def create_app():
     app = Flask(__name__)
-    CORS(app)  # Isso permitirá CORS para todas as rotas
+    CORS(app)  
 
     def create_connection():
         connection = None
@@ -108,7 +108,7 @@ def create_app():
         curvatura = data.get('curvatura')
         tipo_cabelo = data.get('tipo_cabelo')
 
-        # Determinando o nome da tabela de resultados
+        
         result_table_name = None
         if curvatura == 'LISO':
             if tipo_cabelo == 'SECO':
@@ -137,14 +137,14 @@ def create_app():
             try:
                 cursor = connection.cursor()
                 if result_table_name:
-                    # Inserindo na tabela ResultadoGetCabelo
+                    
                     cursor.execute(
                         "INSERT INTO ResultadoGetCabelo (id, curvatura, tipo_cabelo, result_table_name) VALUES (%s, %s, %s, %s)",
                         (0, curvatura, tipo_cabelo, result_table_name)
                     )
                     connection.commit()
 
-                    # Retornando o nome da tabela
+                    
                     return jsonify({"result_table_name": result_table_name})
                 else:
                     return jsonify({"error": "Invalid combination"}), 400
