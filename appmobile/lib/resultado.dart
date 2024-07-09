@@ -76,7 +76,7 @@ class _ResultadoState extends State<Resultado> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(height: 9),
+                  SizedBox(height: 3),
                   Image.asset(
                     'assets/logo.png',
                     width: 300,
@@ -91,7 +91,7 @@ class _ResultadoState extends State<Resultado> {
                     style: ElevatedButton.styleFrom(
                       padding:
                           EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                      backgroundColor: Colors.brown.withOpacity(0.5),
+                      backgroundColor: Colors.brown.withOpacity(0.8),
                     ),
                     child: Text(
                       'REALIZAR COMPRA',
