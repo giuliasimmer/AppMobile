@@ -59,15 +59,7 @@ class _ResultadoState extends State<Resultado> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(''),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           Container(
@@ -85,10 +77,20 @@ class _ResultadoState extends State<Resultado> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Center(
-                    child: Image.asset(
-                      'assets/logo.png',
-                      width: 300,
-                      height: 300,
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/logo.png',
+                          width: 300,
+                          height: 300,
+                        ),
+                        SizedBox(height: 30),
+                        Text(
+                          '*Para efetuar sua compra você deverá copiar o nome do produto na barra de pesquisa*',
+                          style: TextStyle(color: Colors.redAccent),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -103,7 +105,7 @@ class _ResultadoState extends State<Resultado> {
                             itemBuilder: (context, index) {
                               var item = items[index];
                               return Card(
-                                color: Colors.brown[200],
+                                color: Colors.brown.withOpacity(0.7),
                                 margin: EdgeInsets.all(10),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +119,8 @@ class _ResultadoState extends State<Resultado> {
                                       title: Text(
                                         'MARCA: ${item['MARCA']}',
                                         style: TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
                                       ),
                                       subtitle: Column(
                                         crossAxisAlignment:
@@ -126,12 +129,14 @@ class _ResultadoState extends State<Resultado> {
                                           Text(
                                             'DESCRIÇÃO: ${item['DESCRICAO']}',
                                             style: TextStyle(
-                                                fontWeight: FontWeight.bold),
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
                                           ),
                                           Text(
                                             'PREÇO: ${item['PRECO']}',
                                             style: TextStyle(
-                                                fontWeight: FontWeight.bold),
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
                                           ),
                                         ],
                                       ),
@@ -143,36 +148,44 @@ class _ResultadoState extends State<Resultado> {
                           ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        '*Para efetuar sua compra você deverá copiar o nome do produto na barra de pesquisa*',
-                        style: TextStyle(color: Colors.redAccent),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      const url = 'https://www.belezanaweb.com.br/';
+                      launchURL(url);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                      backgroundColor: Color.fromARGB(255, 204, 171, 123),
+                    ),
+                    child: Text(
+                      'REALIZAR COMPRA',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          const url = 'https://www.belezanaweb.com.br/';
-                          launchURL(url);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 30),
-                          backgroundColor: Color.fromARGB(255, 204, 171, 123),
-                        ),
-                        child: Text(
-                          'REALIZAR COMPRA',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ],
+            ),
+          ),
+          Positioned(
+            top: 40,
+            left: 10,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.brown.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.all(10),
+              child: IconButton(
+                icon: Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
             ),
           ),
         ],

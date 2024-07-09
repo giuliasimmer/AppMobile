@@ -38,13 +38,18 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
           Positioned(
             top: 40,
             left: 10,
-            child: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              color: Colors.brown,
-              iconSize: 32,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.brown.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.all(10),
+              child: IconButton(
+                icon: Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
             ),
           ),
           Center(
@@ -53,13 +58,12 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
               children: [
                 Image.asset(
                   'assets/logo.png',
-                  width: 250,
+                  width: 300,
                 ),
                 const SizedBox(height: 20),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.brown
-                        .withOpacity(0.8), // fundo marrom com transparência
+                    color: Colors.brown.withOpacity(0.8),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   padding: EdgeInsets.all(10),

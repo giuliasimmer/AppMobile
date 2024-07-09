@@ -37,7 +37,7 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
             left: 10,
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.brown.withOpacity(0.8),
+                color: Colors.brown.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(10),
               ),
               padding: EdgeInsets.all(10),
@@ -55,7 +55,7 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
               children: [
                 Image.asset(
                   'assets/logo.png',
-                  width: 250,
+                  width: 300,
                 ),
                 const SizedBox(height: 20),
                 Container(
