@@ -20,7 +20,7 @@ class GerarConsulta extends StatefulWidget {
 class _GerarConsultaState extends State<GerarConsulta> {
   bool _isLoading = true;
   late String tableName;
-  late List<dynamic> data; // Change to List<dynamic> to store the fetched data
+  late List<dynamic> data;
   bool _canViewResult = false;
 
   @override
@@ -46,7 +46,7 @@ class _GerarConsultaState extends State<GerarConsulta> {
         final responseData = json.decode(response.body);
         setState(() {
           tableName = responseData['result_table_name'];
-          _fetchTableData(); // Fetch data from the table
+          _fetchTableData();
         });
       } else {
         throw Exception('Failed to load data');
@@ -75,7 +75,7 @@ class _GerarConsultaState extends State<GerarConsulta> {
         final responseData = json.decode(response.body);
         setState(() {
           data = responseData[tableName];
-          _canViewResult = true; // Habilita o botão para ver o resultado
+          _canViewResult = true;
         });
       } else {
         throw Exception('Failed to load table data');
@@ -97,11 +97,23 @@ class _GerarConsultaState extends State<GerarConsulta> {
       body: Stack(
         children: [
           Container(
+            width: double.infinity,
+            height: double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/telaespera.jpg'),
                 fit: BoxFit.cover,
               ),
+            ),
+          ),
+          Positioned(
+            top: 40,
+            left: 10,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ),
           Center(
@@ -135,7 +147,7 @@ class _GerarConsultaState extends State<GerarConsulta> {
                             ),
                           );
                         }
-                      : null, // Desabilita o botão se não puder ver o resultado
+                      : null,
                   child: Text('Ver Resultado'),
                 ),
               ],

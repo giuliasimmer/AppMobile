@@ -39,6 +39,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   url_launcher: ^6.3.0
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -74,6 +75,7 @@ flutter:
     - assets/oleoso.png
     - assets/telaespera.jpg
     - assets/logo.png
+    - assets/produto.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

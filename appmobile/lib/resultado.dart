@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class Resultado extends StatefulWidget {
   final String tableName;
@@ -45,7 +46,6 @@ class _ResultadoState extends State<Resultado> {
         throw Exception('Failed to load data');
       }
     } catch (e) {
-      // Trata erros e exibe mensagem de erro
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erro: $e')),
       );
@@ -60,7 +60,13 @@ class _ResultadoState extends State<Resultado> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Resultado da Consulta'),
+        title: const Text(''),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
@@ -73,8 +79,8 @@ class _ResultadoState extends State<Resultado> {
                         padding: const EdgeInsets.all(16.0),
                         child: Image.asset(
                           'assets/logo.png',
-                          width: 150, // Ajuste o tamanho conforme necessário
-                          height: 150,
+                          width: 350,
+                          height: 350,
                         ),
                       ),
                     ),
@@ -84,23 +90,87 @@ class _ResultadoState extends State<Resultado> {
                         itemBuilder: (context, index) {
                           var item = items[index];
                           return Card(
+                            color: Colors.brown[200],
                             margin: EdgeInsets.all(10),
-                            child: ListTile(
-                              title: Text('Marca: ${item['MARCA']}'),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Descrição: ${item['DESCRICAO']}'),
-                                  Text('Preço: ${item['PRECO']}'),
-                                ],
-                              ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ListTile(
+                                  leading: Image.asset(
+                                    'assets/produto.png',
+                                    width: 50,
+                                    height: 50,
+                                  ),
+                                  title: Text(
+                                    'MARCA: ${item['MARCA']}',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'DESCRIÇÃO: ${item['DESCRICAO']}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        'PREÇO: ${item['PRECO']}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           );
                         },
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            '*Para efetuar sua compra você deverá copiar o nome do produto na barra de pesquisa*',
+                            style: TextStyle(color: Colors.redAccent),
+                          ),
+                          SizedBox(height: 20),
+                          ElevatedButton(
+                            onPressed: () {
+                              const url = 'https://www.belezanaweb.com.br/';
+                              launchURL(url);
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 30),
+                              backgroundColor:
+                                  Color.fromARGB(255, 204, 171, 123),
+                            ),
+                            child: Text(
+                              'REALIZAR COMPRA',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
     );
+  }
+
+  void launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
