@@ -76,6 +76,7 @@ flutter:
     - assets/telaespera.jpg
     - assets/logo.png
     - assets/produto.png
+    - assets/fundo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

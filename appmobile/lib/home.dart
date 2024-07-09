@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'escolhacurvatura.dart'; // Certifique-se de que o caminho está correto
+import 'escolhacurvatura.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -32,7 +32,13 @@ class HomeState extends State<Home> {
                   ),
                 );
               },
-              child: const Text('CRIAR MINHA CONSULTA DETALHADA'),
+              child: Text(
+                'CRIAR MINHA CONSULTA DETALHADA',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.brown,
+                ),
+              ),
             ),
           ),
         ],

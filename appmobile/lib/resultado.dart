@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 
 class Resultado extends StatefulWidget {
@@ -68,101 +68,115 @@ class _ResultadoState extends State<Resultado> {
           },
         ),
       ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : items.isEmpty
-              ? Center(child: Text('Nenhum dado encontrado'))
-              : Column(
-                  children: [
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Image.asset(
-                          'assets/logo.png',
-                          width: 350,
-                          height: 350,
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/fundo.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Center(
+                    child: Image.asset(
+                      'assets/logo.png',
+                      width: 300,
+                      height: 300,
+                    ),
+                  ),
+                ),
+                _isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : items.isEmpty
+                        ? Center(child: Text('Nenhum dado encontrado'))
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: items.length,
+                            itemBuilder: (context, index) {
+                              var item = items[index];
+                              return Card(
+                                color: Colors.brown[200],
+                                margin: EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ListTile(
+                                      leading: Image.asset(
+                                        'assets/produto.png',
+                                        width: 50,
+                                        height: 50,
+                                      ),
+                                      title: Text(
+                                        'MARCA: ${item['MARCA']}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'DESCRIÇÃO: ${item['DESCRICAO']}',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            'PREÇO: ${item['PRECO']}',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        '*Para efetuar sua compra você deverá copiar o nome do produto na barra de pesquisa*',
+                        style: TextStyle(color: Colors.redAccent),
+                      ),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          const url = 'https://www.belezanaweb.com.br/';
+                          launchURL(url);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 30),
+                          backgroundColor: Color.fromARGB(255, 204, 171, 123),
+                        ),
+                        child: Text(
+                          'REALIZAR COMPRA',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: items.length,
-                        itemBuilder: (context, index) {
-                          var item = items[index];
-                          return Card(
-                            color: Colors.brown[200],
-                            margin: EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ListTile(
-                                  leading: Image.asset(
-                                    'assets/produto.png',
-                                    width: 50,
-                                    height: 50,
-                                  ),
-                                  title: Text(
-                                    'MARCA: ${item['MARCA']}',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'DESCRIÇÃO: ${item['DESCRICAO']}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        'PREÇO: ${item['PRECO']}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            '*Para efetuar sua compra você deverá copiar o nome do produto na barra de pesquisa*',
-                            style: TextStyle(color: Colors.redAccent),
-                          ),
-                          SizedBox(height: 20),
-                          ElevatedButton(
-                            onPressed: () {
-                              const url = 'https://www.belezanaweb.com.br/';
-                              launchURL(url);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 30),
-                              backgroundColor:
-                                  Color.fromARGB(255, 204, 171, 123),
-                            ),
-                            child: Text(
-                              'REALIZAR COMPRA',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
