@@ -76,22 +76,46 @@ class _ResultadoState extends State<Resultado> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          'assets/logo.png',
-                          width: 300,
-                          height: 300,
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/logo.png',
+                        width: 300,
+                        height: 300,
+                      ),
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          const url = 'https://www.belezanaweb.com.br/';
+                          launchURL(url);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 30),
+                          backgroundColor: Colors.brown.withOpacity(0.5),
                         ),
-                        SizedBox(height: 30),
-                        Text(
+                        child: Text(
+                          'REALIZAR COMPRA',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
                           '*Para efetuar sua compra você deverá copiar o nome do produto na barra de pesquisa*',
-                          style: TextStyle(color: Colors.redAccent),
+                          style: TextStyle(
+                            color: Colors.redAccent,
+                            fontWeight: FontWeight.bold,
+                          ),
                           textAlign: TextAlign.center,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 _isLoading
@@ -146,33 +170,11 @@ class _ResultadoState extends State<Resultado> {
                               );
                             },
                           ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      const url = 'https://www.belezanaweb.com.br/';
-                      launchURL(url);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-                      backgroundColor: Color.fromARGB(255, 204, 171, 123),
-                    ),
-                    child: Text(
-                      'REALIZAR COMPRA',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
           Positioned(
-            top: 40,
+            top: 20,
             left: 10,
             child: Container(
               decoration: BoxDecoration(
