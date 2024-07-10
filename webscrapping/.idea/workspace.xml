@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7876d6c6-e26a-4e64-a4aa-99234fbb0b92" name="Changes" comment="" />
+    <list default="true" id="7876d6c6-e26a-4e64-a4aa-99234fbb0b92" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cacheado_normal.py" beforeDir="false" afterPath="$PROJECT_DIR$/cacheado_normal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cacheado_oleoso.py" beforeDir="false" afterPath="$PROJECT_DIR$/cacheado_oleoso.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cacheado_seco.py" beforeDir="false" afterPath="$PROJECT_DIR$/cacheado_seco.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/liso_normal.py" beforeDir="false" afterPath="$PROJECT_DIR$/liso_normal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/liso_oleoso.py" beforeDir="false" afterPath="$PROJECT_DIR$/liso_oleoso.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/liso_seco.py" beforeDir="false" afterPath="$PROJECT_DIR$/liso_seco.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ondulado_normal.py" beforeDir="false" afterPath="$PROJECT_DIR$/ondulado_normal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ondulado_oleoso.py" beforeDir="false" afterPath="$PROJECT_DIR$/ondulado_oleoso.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ondulado_seco.py" beforeDir="false" afterPath="$PROJECT_DIR$/ondulado_seco.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,24 +39,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.cacheado_normal.executor": "Run",
-    "Python.cacheado_oleoso.executor": "Run",
-    "Python.cacheado_seco.executor": "Run",
-    "Python.liso_oleoso.executor": "Run",
-    "Python.liso_seco.executor": "Run",
-    "Python.ondulado_normal.executor": "Run",
-    "Python.ondulado_oleoso.executor": "Run",
-    "Python.ondulado_seco.executor": "Run",
-    "Python.scrapping.executor": "Run",
-    "Python.scrapping_liso.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "Finalizacao-paginas-de-resultado-da-consulta",
-    "last_opened_file_path": "C:/Git/AppMobile/webscrapping"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.cacheado_normal.executor&quot;: &quot;Run&quot;,
+    &quot;Python.cacheado_oleoso.executor&quot;: &quot;Run&quot;,
+    &quot;Python.cacheado_seco.executor&quot;: &quot;Run&quot;,
+    &quot;Python.liso_normal.executor&quot;: &quot;Run&quot;,
+    &quot;Python.liso_oleoso.executor&quot;: &quot;Run&quot;,
+    &quot;Python.liso_seco.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ondulado_normal.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ondulado_oleoso.executor&quot;: &quot;Run&quot;,
+    &quot;Python.ondulado_seco.executor&quot;: &quot;Run&quot;,
+    &quot;Python.scrapping.executor&quot;: &quot;Run&quot;,
+    &quot;Python.scrapping_liso.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Git/AppMobile/webscrapping&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
