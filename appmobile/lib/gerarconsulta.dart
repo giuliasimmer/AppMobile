@@ -44,18 +44,21 @@ class _GerarConsultaState extends State<GerarConsulta> {
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        setState(() {
-          tableName = responseData['result_table_name'];
-          _fetchTableData();
-        });
+        if (responseData['result_table_name'] != null) {
+          setState(() {
+            tableName = responseData['result_table_name'];
+            _fetchTableData();
+          });
+        } else {
+          throw Exception('Nome da tabela de resultados não encontrado');
+        }
       } else {
-        throw Exception('Failed to load data');
+        throw Exception('Falha ao carregar dados');
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erro: $e')),
       );
-    } finally {
       setState(() {
         _isLoading = false;
       });
@@ -73,12 +76,16 @@ class _GerarConsultaState extends State<GerarConsulta> {
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        setState(() {
-          data = responseData[tableName];
-          _canViewResult = true;
-        });
+        if (responseData[tableName] != null) {
+          setState(() {
+            data = responseData[tableName];
+            _canViewResult = data.isNotEmpty;
+          });
+        } else {
+          throw Exception('Dados da tabela não encontrados');
+        }
       } else {
-        throw Exception('Failed to load table data');
+        throw Exception('Falha ao carregar dados da tabela');
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -148,7 +155,7 @@ class _GerarConsultaState extends State<GerarConsulta> {
                           );
                         }
                       : null,
-                  child: Text('Ver Resultado'),
+                  child: Text('VER RESULTADO'),
                 ),
               ],
             ),

@@ -151,7 +151,7 @@ class _EscolhaTipoState extends State<EscolhaTipo> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Opções Selecionadas'),
+          title: const Text('OPÇÕES SELECIONADAS:'),
           content: Text(
               'Curvatura: ${widget.curvaturaSelecionada}\nTipo: $selectedOption'),
           actions: [

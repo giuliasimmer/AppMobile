@@ -65,7 +65,7 @@ class _EscolhaCurvaturaState extends State<EscolhaCurvatura> {
                   ),
                   padding: EdgeInsets.all(10),
                   child: Text(
-                    'Escolha a curvatura do seu cabelo abaixo',
+                    'Escolha a curvatura do seu cabelo abaixo:',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

@@ -101,14 +101,13 @@ def create_app():
                 cursor.close()
                 connection.close()
         return jsonify({"message": "Erro ao conectar ao banco de dados"}), 500
-
+        
     @app.route('/recolhecabelo', methods=['POST'])
     def recolhe_cabelo():
         data = request.get_json()
         curvatura = data.get('curvatura')
         tipo_cabelo = data.get('tipo_cabelo')
 
-        
         result_table_name = None
         if curvatura == 'LISO':
             if tipo_cabelo == 'SECO':
@@ -137,14 +136,11 @@ def create_app():
             try:
                 cursor = connection.cursor()
                 if result_table_name:
-                    
                     cursor.execute(
-                        "INSERT INTO ResultadoGetCabelo (id, curvatura, tipo_cabelo, result_table_name) VALUES (%s, %s, %s, %s)",
-                        (0, curvatura, tipo_cabelo, result_table_name)
+                        "INSERT INTO ResultadoGetCabelo (curvatura, tipo_cabelo, result_table_name) VALUES (%s, %s, %s)",
+                        (curvatura, tipo_cabelo, result_table_name)
                     )
                     connection.commit()
-
-                    
                     return jsonify({"result_table_name": result_table_name})
                 else:
                     return jsonify({"error": "Invalid combination"}), 400
@@ -155,6 +151,8 @@ def create_app():
                 connection.close()
         else:
             return jsonify({"error": "Erro ao conectar ao banco de dados"}), 500
+
+    from mysql.connector import Error
 
     @app.route('/resultadocabelo', methods=['GET'])
     def get_resultado_cabelo():
@@ -168,26 +166,50 @@ def create_app():
 
                 if record:
                     result_table_name = record[0]
-                    query_data = f'SELECT * FROM {result_table_name}'
-                    cursor.execute(query_data)
-                    data = cursor.fetchall()
+                    if result_table_name:
+                        # Verificar se a tabela existe
+                        cursor.execute(f"SHOW TABLES LIKE '{result_table_name}'")
+                        table_exists = cursor.fetchone()
+                        
+                        if table_exists:
+                            print(f"Tabela encontrada: {result_table_name}")
+                            query_data = f'SELECT * FROM {result_table_name}'
+                            cursor.execute(query_data)
+                            data = cursor.fetchall()
 
-                    columns = [desc[0] for desc in cursor.description]
-                    result_data = [dict(zip(columns, row)) for row in data]
+                            if cursor.description:
+                                columns = [desc[0] for desc in cursor.description]
+                                result_data = [
+                                    {key: value for key, value in zip(columns, row) if value is not None}
+                                    for row in data
+                                ]
 
-                    return jsonify({result_table_name: result_data}), 200
+                                if result_data:
+                                    return jsonify({result_table_name: result_data}), 200
+                                else:
+                                    return jsonify({"message": "Nenhum dado encontrado"}), 404
+                            else:
+                                return jsonify({"message": "Nenhuma descrição de coluna encontrada"}), 500
+                        else:
+                            return jsonify({"message": f"A tabela '{result_table_name}' não existe"}), 404
+                    else:
+                        return jsonify({"message": "Nome da tabela resultante é None"}), 500
                 else:
                     return jsonify({"message": "Nenhum dado encontrado"}), 404
             except Error as e:
                 print(f"Erro ao buscar dados: {e}")
                 return jsonify({"message": "Erro ao buscar dados"}), 500
+            except Exception as e:
+                print(f"Erro inesperado: {e}")
+                return jsonify({"message": "Erro inesperado"}), 500
             finally:
-                cursor.close()
+                if cursor:
+                    cursor.close()
                 connection.close()
         else:
             return jsonify({"message": "Erro ao conectar ao banco de dados"}), 500
 
-        
+
     return app
 
 if __name__ == '__main__':

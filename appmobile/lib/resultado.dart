@@ -22,7 +22,7 @@ class Resultado extends StatefulWidget {
 }
 
 class _ResultadoState extends State<Resultado> {
-  late List<dynamic> items;
+  late List<dynamic> items = [];
   bool _isLoading = true;
 
   @override
@@ -40,7 +40,15 @@ class _ResultadoState extends State<Resultado> {
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
         setState(() {
-          items = responseData[widget.tableName];
+          items = responseData[widget.tableName] ?? [];
+
+          // Filtrando valores nulos e mapeando valores nulos para strings vazias
+          items = items
+              .where((item) => item.values.any((value) => value != null))
+              .map((item) =>
+                  item.map((key, value) => MapEntry(key, value ?? "")))
+              .toList();
+
           _isLoading = false;
         });
       } else {
@@ -149,6 +157,13 @@ class _ResultadoState extends State<Resultado> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
+                                            Text(
+                                              'NOME: ${item['NOME']}',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
                                             Text(
                                               'DESCRIÇÃO: ${item['DESCRICAO']}',
                                               style: TextStyle(
