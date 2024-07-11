@@ -43,7 +43,7 @@ if site_content:
     dic_produtos = {'marca': [], 'nome': [], 'preco': [], 'descricao': []}
 
     for i in range(1, ultima_pagina + 1):
-        url_pag = f'https://www.belezanaweb.com.br/cabelos/kits-de-tratamento/lisos/?page_number={i}'
+        url_pag = f'https://www.belezanaweb.com.br/cabelos/kits-de-tratamento/finos/?page_number={i}'
         site = get_site_content(url_pag, headers)
         if site:
             soup = BeautifulSoup(site, 'html.parser')

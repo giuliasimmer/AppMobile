@@ -5,8 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7876d6c6-e26a-4e64-a4aa-99234fbb0b92" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../appmobile/backend/app/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/../appmobile/backend/app/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/liso_normal.py" beforeDir="false" afterPath="$PROJECT_DIR$/liso_normal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cacheado_normal.py" beforeDir="false" afterPath="$PROJECT_DIR$/cacheado_normal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cacheado_oleoso.py" beforeDir="false" afterPath="$PROJECT_DIR$/cacheado_oleoso.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cacheado_seco.py" beforeDir="false" afterPath="$PROJECT_DIR$/cacheado_seco.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/liso_oleoso.py" beforeDir="false" afterPath="$PROJECT_DIR$/liso_oleoso.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/liso_seco.py" beforeDir="false" afterPath="$PROJECT_DIR$/liso_seco.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ondulado_normal.py" beforeDir="false" afterPath="$PROJECT_DIR$/ondulado_normal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ondulado_oleoso.py" beforeDir="false" afterPath="$PROJECT_DIR$/ondulado_oleoso.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ondulado_seco.py" beforeDir="false" afterPath="$PROJECT_DIR$/ondulado_seco.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
