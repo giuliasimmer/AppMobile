@@ -31,7 +31,7 @@ engine = create_engine('mysql+mysqlconnector://root:admin@localhost/appmobile', 
 if site_content:
     soup = BeautifulSoup(site_content, 'html.parser')
 
-    # Extraindo a quantidade total de itens
+
     pagination_total = soup.find('p', class_='pagination-total')
     if pagination_total:
         qtd_itens = int(re.search(r'\d+', pagination_total.get_text().strip()).group())

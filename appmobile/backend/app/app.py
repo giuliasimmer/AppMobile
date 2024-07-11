@@ -167,7 +167,7 @@ def create_app():
                 if record:
                     result_table_name = record[0]
                     if result_table_name:
-                        # Verificar se a tabela existe
+                        
                         cursor.execute(f"SHOW TABLES LIKE '{result_table_name}'")
                         table_exists = cursor.fetchone()
                         

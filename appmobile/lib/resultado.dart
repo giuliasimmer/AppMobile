@@ -42,7 +42,6 @@ class _ResultadoState extends State<Resultado> {
         setState(() {
           items = responseData[widget.tableName] ?? [];
 
-          // Filtrando valores nulos e mapeando valores nulos para strings vazias
           items = items
               .where((item) => item.values.any((value) => value != null))
               .map((item) =>
